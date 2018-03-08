@@ -1,0 +1,155 @@
+<script>
+// function doGet(e){
+//   var page = HtmlService.createTemplateFromFile("clientDrive");
+//   var currentUser = Session.getActiveUser.getEmail();
+//   page.currentUser = currentUser;
+//   return page.evaluate();
+// }
+
+// function include(filename) {
+//   return HtmlService.createHtmlOutputFromFile(filename).getContent();
+// }
+
+// for debugging purpose
+// function onOpen() {
+//   menu();
+// }
+
+// function menu() {
+//   SpreadsheetApp.getUi()
+//     .createMenu("Dev")
+//     .addItem("modal", "showModal")
+//     .addToUi();
+// }
+
+// function showModal() {
+//   var page = HtmlService.createTemplateFromFile("main").evaluate();
+//   SpreadsheetApp.getUi().showModalDialog(page, "DEV");
+// }
+
+//  function sayHi(index){
+//    return 'hi'+index;
+//  }
+
+//  function listContent(fileId, store){
+//    var file = Drive.Files.get(fileId, {alt:'media'});
+//    if (file&&file.rubricId) {
+//       file.rubricName = Drive.Files.get(file.rubricId, {'fields':'title'}).title;
+//       store.push(file);
+//       return file;
+//    } else if (file&&file.rubrics){
+//      file.rubricName = Drive.Files.get(file.rubrics[0], {'fields':'title'}).title;
+//       store.push(file);
+//       return file;
+//    } else {
+//      return null;
+//    }
+//  }
+
+//  function listAssignment(store){
+//    return store.map(function(file){
+//       var info = Drive.Files.get(file.ssKey,{'fields':'title,createdDate'});
+//       file.ssName = info.title;
+//       file.createDate = info.createdDate;
+//    });
+//  }
+
+// function showRubricNon() {
+//   var assignments = [];
+//   var file, fileStr, assignment, rawData = {};
+//   rawData.uniqueRubric = [];
+//   rawData.rubricIdsMap = {};
+//   var owner = Session.getEffectiveUser().getEmail();
+//   var query = 'trashed = false and ' +
+//       'mimeType = "application/doctopus.assignment" and "'+owner+'" in owners';
+//   var assignmentFiles = Drive.Files.list({q:query}).items;
+//   assignmentFiles.forEach(function(file){
+//       if(file.fileSize!=='0'){
+//         assignment = Drive.Files.get(file.id, {alt:'media'});
+//         assignments.push(assignment);
+//       }
+//   });
+//   while (assignmentFiles.hasNext()) {
+//     file = assignmentFiles.next();
+//     try {
+//       fileStr = file.getBlob().getDataAsString();
+//       if (fileStr.trim() === '') {
+//           fileStr = "[]";
+//       }
+//     } catch (e) {
+//       fileStr = "[]";
+//     }
+//     assignment = JSON.parse(fileStr);
+//     assignments.push(assignment);
+//     var id = assignment.rubricId ? assignment.rubricId : assignment.rubrics ?  assignment.rubrics[0] : '';
+//     if (id) {
+//       try {
+//         var rubric = DriveApp.getFileById(id);
+//         var rubricName = rubric.getName();
+//       } catch (e) {
+//           console.log(e);
+//           rubricName = 'missing rubric spreadsheet'
+//       }
+//       if (!rawData[id]) {
+//         rawData[id] = [];
+//         rawData.uniqueRubric.push({
+//           rubricName: rubricName,
+//           rubricId: id
+//         });
+//         rawData.rubricIdsMap[id] = rubricName;
+//       }
+//       if (rawData[id]) {
+//         try {
+//           ss = DriveApp.getFileById(assignment.ssKey);
+//           ssName = ss.getName();
+//         } catch (e) {
+//             console.log(e);
+//             ssName = "missing doctopus/assignment spreadsheet"
+//         }
+//         try {
+//           dateCreated = ss.getDateCreated().toString();
+//         } catch (e) {
+//             console.log(e);
+//             dateCreated = "missing date created"
+//         }
+//         assignment["ssName"] = ssName;
+//         assignment["dateCreated"] = dateCreated;
+//         rawData[id].push(assignment);
+//       }
+//     }
+//   }
+//   return rawData;
+// }
+
+//  function getFiles() {
+//    var owner = Session.getEffectiveUser().getEmail();
+//    var query = 'trashed = false and mimeType = "application/doctopus.assignment" and "' + owner + '" in owners';
+//    var fields = "files(createdTime,description,id,name,ownedByMe,properties,size,trashed)";
+//    var files,
+//      pageToken,
+//      collec = [];
+//    do {
+//      files = Drive.Files.list({
+//        q: query,
+//        maxResults: 100,
+//        pageToken: pageToken,
+//        params: { fields: fields }
+//      });
+//      if (files.items && files.items.length > 0) {
+//        for (var i = 0; i < files.items.length; i++) {
+//          var file = files.items[i];
+//          if (file.fileSize !== "0") {
+//            collec.push({ title: file.title, id: file.id });
+//          }
+//        }
+//      } else {
+//        collec.push("No files found.");
+//      }
+//      pageToken = files.nextPageToken;
+//      Logger.log(files.items.length);
+//    } while (pageToken);
+//    return collec;
+//  }
+</script>
+
+

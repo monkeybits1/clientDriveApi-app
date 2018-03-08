@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Goobric</title>
+  <base href="/" target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="https://storage.googleapis.com/cloudlab-images/goobric-32x32.jpg">
+</head>
+<body>
+
+  <button onclick="sayHi()">sayHi</button>
+  <button onclick="showRubric()">showRubric</button>
+  <button onclick="showRubricNon()">showRubricNon</button>
+  <button onclick="counter()">startCounts</button>
+
+</body>
+
+<script>
+  var store = [];
+  function sayHi(){
+     var i = 1;
+     while(i<3){
+
+       google.script.run.withSuccessHandler(function(val){
+         console.log(val);
+       }).sayHi(i);
+       console.log('called '+i);
+       i++;
+     }
+  }
+
+  function showRubric(){
+    var start = new Date().toLocaleString();
+    var rubricMonitor = createMonitor();
+    var due;
+    console.log('started '+start);
+    google.script.run.withSuccessHandler(function(val){
+      due = val.length;
+      console.log(val);
+      val.forEach(function(el,i){
+        listContent(el.id,i,store,due,rubricMonitor);
+      });
+    }).getFiles();
+  }
+
+  function listContent(fileId,i, store,due,rubricMonitor){
+     google.script.run.withSuccessHandler(function(val){
+       if(val){
+         console.log(val.rubricName);
+         console.log('stamped: '+new Date().toLocaleString());
+         store.push(val);
+       }
+       if (i+1 === due){
+         stopMonitor(rubricMonitor);
+         // the assignment collec that has valid rubric id and current user is the owner not the writer
+         console.log(store);
+         listAssignment(store);
+       }
+     }).listContent(fileId,store);
+     console.log('called '+i);
+  }
+
+  function listAssignment(store){
+    console.log('started '+new Date().toString());
+    google.script.run.withSuccessHandler(function(val){
+      console.log(val);
+      console.log('finished '+new Date().toString());
+    }).listAssignment(store);
+  }
+
+  function showRubricNon(){
+    var start = new Date().toLocaleString();
+    console.log('started '+start);
+    google.script.run.withSuccessHandler(function(val){
+      val.uniqueRubric.forEach(function(rubric){
+        console.log(rubric.rubricName);
+
+      });
+      console.log('finished: '+new Date().toLocaleString());
+    }).showRubricNon();
+  }
+
+  function createMonitor(){
+    return setInterval(function(){
+      console.log('hi');
+    },500);
+  }
+
+  function stopMonitor(id){
+    clearInterval(id);
+  }
+
+
+</script>
+ </html>
